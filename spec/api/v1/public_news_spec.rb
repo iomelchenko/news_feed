@@ -46,9 +46,8 @@ describe V1::PublicNews do
       it "unpublished news by id" do
         get "/api/v1/public_news/#{news.id}"
 
-        expect(response_json['news']).to eq({
-
-        })
+        expect(response.status).to eql 404
+        expect(response_json['errors']).to eql("Couldn't find News with 'id'=#{news.id}")
       end
     end
 
@@ -62,7 +61,7 @@ describe V1::PublicNews do
           "title" => created_news.title,
           "body" => created_news.body,
           "state" => 'pending approval',
-          "created_at" => created_news.created_at
+          "created_at" => created_news.created_at.strftime('%FT%T%:z')
         })
       end
     end
