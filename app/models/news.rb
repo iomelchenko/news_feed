@@ -7,6 +7,8 @@ class News < ActiveRecord::Base
   has_many   :comments
   has_many   :ratings, as: :target
 
+  scope :published,  -> { where(state: 'published') }
+
   private
 
   def initiate_state

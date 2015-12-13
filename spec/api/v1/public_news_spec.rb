@@ -1,4 +1,4 @@
-describe V1::News do
+describe V1::PublicNews do
   let(:params) do
     {
       title: attributes_for(:news)[:title],
@@ -22,14 +22,14 @@ describe V1::News do
   context 'Default user' do
     describe "can GET" do
       it "all list of published news" do
-        get "/api/v1/news"
+        get "/api/v1/public_news"
 
         expect(response.status).to eql 200
         expect(response_json.count).to eq News.published.count
       end
 
       it "published news by id" do
-        get "/api/v1/news/#{published_news.id}"
+        get "/api/v1/public_news/#{published_news.id}"
 
         expect(response_json['news']).to eq({
           "id"   => published_news.id,
@@ -42,7 +42,7 @@ describe V1::News do
 
     describe "can NOT GET" do
       it "unpublished news by id" do
-        get "/api/v1/news/#{news.id}"
+        get "/api/v1/public_news/#{news.id}"
 
         expect(response_json['news']).to eq({
 
@@ -52,7 +52,7 @@ describe V1::News do
 
     describe "can POST" do
       it "new news" do
-        post '/api/v1/news', params.merge!(user_id: user.id)
+        post '/api/v1/public_news', params.merge!(user_id: user.id)
         created_news = News.last
 
         expect(response_json['news']).to eq({
