@@ -18,6 +18,11 @@ module V1
         check_auth
         @news = NewsCreator.new(params, current_user).execute
       end
+
+      put ":id" do
+        check_auth
+        @news = NewsStateChanger.new(params).execute
+      end
     end
   end
 end

@@ -31,7 +31,7 @@ module V1
       end
 
       def authenticated
-        params[:api_key] && (@user = User.find_by_api_key(params[:api_key])) && (@user.api_key_expires_at > Time.now - 2.hours)
+        params[:api_key] && (@user = User.find_by_api_key(params[:api_key])) && (@user.api_key_expires_at > Time.now)
       end
 
       def getting_api_key

@@ -87,4 +87,21 @@ describe V1::PublicNews do
       end
     end
   end
+
+  context 'Manager' do
+    describe "can" do
+      it " approve news" do
+        put "/api/v1/public_news/#{news.id}", @credentials
+
+        expect(response_json['news']).to eq({
+          "id"   => news.id,
+          "title" => news.title,
+          "body" => news.body,
+          "state" => 'published',
+          "user_id" => news.user_id,
+          "created_at" => news.created_at.strftime('%FT%T%:z')
+        })
+      end
+    end
+  end
 end
