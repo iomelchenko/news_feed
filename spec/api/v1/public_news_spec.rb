@@ -67,6 +67,15 @@ describe V1::PublicNews do
         })
       end
     end
+
+    describe "can NOT POST" do
+      it "new news vith invalid params" do
+        params[:title] = ''
+        post '/api/v1/public_news', params.merge!(@credentials)
+
+        expect(response.status).to eql 422
+      end
+    end
   end
 
   context 'Guest' do

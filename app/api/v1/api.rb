@@ -12,7 +12,16 @@ module V1
              message: "not_found",
              errors: message }.to_json, 404,
           { 'Content-Type' => 'application/json' })
-      end
+    end
+
+    rescue_from Grape::Exceptions::ValidationErrors do |e|
+      Rack::Response.new(
+          { success: false,
+             status: 422,
+             message: 'validation error',
+             errors: e.message }.to_json, 422,
+          { 'Content-Type' => 'application/json' })
+    end
 
     helpers do
       def check_auth
