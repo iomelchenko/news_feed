@@ -16,12 +16,20 @@ module V1
 
       post do
         check_auth
-        @news = NewsCreator.new(params, current_user).execute
+        if requested_user.can? :create, News
+          @news = NewsCreator.new(params, current_user).execute
+        else
+          error!("403 Access denied", 403)
+        end
       end
 
       put ":id" do
         check_auth
-        @news = NewsStateChanger.new(params).execute
+        if requested_user.can? :update, News
+          @news = NewsStateChanger.new(params).execute
+        else
+          error!("403 Access denied", 403)
+        end
       end
     end
   end

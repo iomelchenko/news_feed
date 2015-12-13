@@ -7,6 +7,7 @@ describe V1::PublicNews do
   end
 
   let(:user) { create :user }
+  let(:manager) { create :user, role: 'Manager' }
   let(:news) { create :news, user: user }
   let(:published_news) { create :news, user: user }
 
@@ -14,6 +15,7 @@ describe V1::PublicNews do
     published_news.state = 'published'
     published_news.save
     @credentials = get_credentials(user)
+    @managers_credentials = get_credentials(manager)
   end
 
   def response_json
@@ -75,6 +77,12 @@ describe V1::PublicNews do
 
         expect(response.status).to eql 422
       end
+
+      it " approve news" do
+        put "/api/v1/public_news/#{news.id}", @credentials
+
+        expect(response.status).to eql 403
+      end
     end
   end
 
@@ -91,7 +99,7 @@ describe V1::PublicNews do
   context 'Manager' do
     describe "can" do
       it " approve news" do
-        put "/api/v1/public_news/#{news.id}", @credentials
+        put "/api/v1/public_news/#{news.id}", @managers_credentials
 
         expect(response_json['news']).to eq({
           "id"   => news.id,

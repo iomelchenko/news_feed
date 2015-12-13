@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
   has_many :comments
   has_many :ratings
 
+  def role?(user_role)
+    role == user_role.to_s
+  end
+
   private
 
   def encrypted_password

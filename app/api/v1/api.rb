@@ -41,6 +41,10 @@ module V1
       def current_user
         User.find_by_api_key(params[:api_key]) || @user
       end
+
+      def requested_user
+        Ability.new(current_user)
+      end
     end
 
     # resources:
