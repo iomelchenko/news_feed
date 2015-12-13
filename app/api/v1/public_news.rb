@@ -26,7 +26,7 @@ module V1
       put ":id" do
         check_auth
         if requested_user.can? :update, News
-          @news = NewsStateChanger.new(params).execute
+          @news = NewsStateEditor.new(params).execute
         else
           error!("403 Access denied", 403)
         end

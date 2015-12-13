@@ -1,4 +1,4 @@
-class NewsStateChanger
+class NewsStateEditor
   def initialize(params)
     @params = { id: params[:id] }
   end

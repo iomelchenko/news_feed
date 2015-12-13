@@ -8,7 +8,7 @@ module V1
         end
 
         get do
-          @news = Comment.where(news_id: @params[:news_id])
+          @comments = Comment.where(news_id: @params[:news_id])
         end
 
         params do
@@ -18,7 +18,7 @@ module V1
 
         post do
           current_user_id = current_user.id if current_user.present?
-          @news = CommentsCreator.new(params, current_user_id).execute
+          @comment = CommentsCreator.new(params, current_user_id).execute
         end
       end
     end
