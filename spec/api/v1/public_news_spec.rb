@@ -35,7 +35,9 @@ describe V1::PublicNews do
           "id"   => published_news.id,
           "title" => published_news.title,
           "body" => published_news.body,
-          "created_at" => published_news.created_at
+          "state" => published_news.state,
+          "user_id" => published_news.user_id,
+          "created_at" => published_news.created_at.strftime('%FT%T%:z')
         })
       end
     end

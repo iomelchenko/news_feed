@@ -4,6 +4,10 @@ module V1
       get do
         @news = News.published
       end
+
+      get ":id" do
+        @news = NewsSearcher.new(params).execute
+      end
     end
   end
 end
