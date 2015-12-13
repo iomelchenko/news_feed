@@ -53,7 +53,7 @@ describe V1::PublicNews do
 
     describe "can POST" do
       it "new news" do
-        post '/api/v1/public_news', params.merge!(user_id: user.id)
+        post '/api/v1/public_news', params
         created_news = News.last
 
         expect(response_json['news']).to eq({
@@ -61,6 +61,7 @@ describe V1::PublicNews do
           "title" => created_news.title,
           "body" => created_news.body,
           "state" => 'pending approval',
+          "user_id" => user.id,
           "created_at" => created_news.created_at.strftime('%FT%T%:z')
         })
       end

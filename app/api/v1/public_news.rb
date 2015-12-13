@@ -8,6 +8,15 @@ module V1
       get ":id" do
         @news = NewsSearcher.new(params).execute
       end
+
+      params do
+        requires :title, type: String, allow_blank: false
+        requires :body, type: String, allow_blank: false
+      end
+
+      post do
+        @news = NewsCreator.new(params, current_user).execute
+      end
     end
   end
 end
