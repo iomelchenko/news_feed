@@ -4,11 +4,11 @@ module V1
       before { check_auth }
 
       post do
-        Sessions::SessionCreator.new(params).execute
+        SessionCreator.new(params).execute
       end
 
       delete do
-        Sessions::SessionDestroyer.new(current_user).execute
+        SessionDestroyer.new(current_user).execute
       end
     end
   end
