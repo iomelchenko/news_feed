@@ -1,5 +1,8 @@
 News feed backend application with API
 
+You can show application routes using command:
+  rake grape:routes
+
 Examples of implemented REST requests:
 
 News model:
