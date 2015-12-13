@@ -50,5 +50,6 @@ module V1
     # resources:
     mount V1::Sessions
     mount V1::PublicNews
+    mount V1::Comments
   end
 end

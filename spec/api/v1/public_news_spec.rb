@@ -25,14 +25,14 @@ describe V1::PublicNews do
   context 'Default user' do
     describe "can GET" do
       it "all list of published news" do
-        get "/api/v1/public_news"
+        get "/api/v1/news"
 
         expect(response.status).to eql 200
         expect(response_json.count).to eq News.published.count
       end
 
       it "published news by id" do
-        get "/api/v1/public_news/#{published_news.id}"
+        get "/api/v1/news/#{published_news.id}"
 
         expect(response_json['news']).to eq({
           "id"   => published_news.id,
@@ -47,7 +47,7 @@ describe V1::PublicNews do
 
     describe "can NOT GET" do
       it "unpublished news by id" do
-        get "/api/v1/public_news/#{news.id}"
+        get "/api/v1/news/#{news.id}"
 
         expect(response.status).to eql 404
         expect(response_json['errors']).to eql("Couldn't find News with 'id'=#{news.id}")
@@ -56,7 +56,7 @@ describe V1::PublicNews do
 
     describe "can POST" do
       it "new news" do
-        post '/api/v1/public_news', params.merge!(@credentials)
+        post '/api/v1/news', params.merge!(@credentials)
         created_news = News.last
 
         expect(response_json['news']).to eq({
@@ -73,13 +73,13 @@ describe V1::PublicNews do
     describe "can NOT POST" do
       it "new news vith invalid params" do
         params[:title] = ''
-        post '/api/v1/public_news', params.merge!(@credentials)
+        post '/api/v1/news', params.merge!(@credentials)
 
         expect(response.status).to eql 422
       end
 
       it " approve news" do
-        put "/api/v1/public_news/#{news.id}", @credentials
+        put "/api/v1/news/#{news.id}", @credentials
 
         expect(response.status).to eql 403
       end
@@ -89,7 +89,7 @@ describe V1::PublicNews do
   context 'Guest' do
     describe "can NOT POST" do
       it "new news" do
-        post '/api/v1/public_news', params
+        post '/api/v1/news', params
 
         expect(response.status).to eql 401
       end
@@ -99,7 +99,7 @@ describe V1::PublicNews do
   context 'Manager' do
     describe "can" do
       it " approve news" do
-        put "/api/v1/public_news/#{news.id}", @managers_credentials
+        put "/api/v1/news/#{news.id}", @managers_credentials
 
         expect(response_json['news']).to eq({
           "id"   => news.id,
