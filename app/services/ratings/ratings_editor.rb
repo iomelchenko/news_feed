@@ -10,7 +10,7 @@ class RatingsEditor
 
   def execute
     if users_rating.present?
-      rating = user_rating
+      rating = users_rating
       rating.rating = @params[:rating]
     else
       rating = Rating.new(@params)
@@ -36,7 +36,7 @@ class RatingsEditor
     if @params[:user_id].present?
      @user_rating ||= Rating.where(user_id:     @params[:user_id],
                                    target_type: @params[:target_type],
-                                   target_id:   @params[:target_id])
+                                   target_id:   @params[:target_id]).first
     end
     @user_rating
   end
