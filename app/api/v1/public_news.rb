@@ -15,6 +15,7 @@ module V1
       end
 
       post do
+        check_auth
         @news = NewsCreator.new(params, current_user).execute
       end
     end

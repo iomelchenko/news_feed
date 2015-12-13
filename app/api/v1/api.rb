@@ -14,7 +14,28 @@ module V1
           { 'Content-Type' => 'application/json' })
       end
 
+    helpers do
+      def check_auth
+        unless authenticated || getting_api_key
+          error!("401 Unauthorized", 401)
+        end
+      end
+
+      def authenticated
+        params[:api_key] && (@user = User.find_by_api_key(params[:api_key])) && (@user.api_key_expires_at > Time.now - 2.hours)
+      end
+
+      def getting_api_key
+        params[:username].present? && params[:password].present?
+      end
+
+      def current_user
+        User.find_by_api_key(params[:api_key]) || @user
+      end
+    end
+
     # resources:
+    mount V1::Sessions
     mount V1::PublicNews
   end
 end

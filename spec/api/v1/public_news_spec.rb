@@ -13,6 +13,7 @@ describe V1::PublicNews do
   before do
     published_news.state = 'published'
     published_news.save
+    @credentials = get_credentials(user)
   end
 
   def response_json
@@ -53,7 +54,7 @@ describe V1::PublicNews do
 
     describe "can POST" do
       it "new news" do
-        post '/api/v1/public_news', params
+        post '/api/v1/public_news', params.merge!(@credentials)
         created_news = News.last
 
         expect(response_json['news']).to eq({
@@ -64,6 +65,16 @@ describe V1::PublicNews do
           "user_id" => user.id,
           "created_at" => created_news.created_at.strftime('%FT%T%:z')
         })
+      end
+    end
+  end
+
+  context 'Guest' do
+    describe "can NOT POST" do
+      it "new news" do
+        post '/api/v1/public_news', params
+
+        expect(response.status).to eql 401
       end
     end
   end
